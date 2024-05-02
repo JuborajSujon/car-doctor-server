@@ -1,15 +1,17 @@
 const express = require("express");
 const cors = require("cors");
-const jwt = require("jsonwebtoken");
+// const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const app = express();
 const port = process.env.PORT || 5000;
+
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 
 app.use(cors());
 app.use(express.json());
 
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.3s0l5.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@atlascluster.xgsegjb.mongodb.net/?retryWrites=true&w=majority`;
+
 const client = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -33,8 +35,8 @@ function verifyJWT(req, res, next) {
 
 async function run() {
   try {
-    const serviceCollection = client.db("geniusCar").collection("service");
-    const orderCollection = client.db("geniusCar").collection("order");
+    const serviceCollection = client.db("cardoctor").collection("services");
+    const orderCollection = client.db("cardoctor").collection("orders");
 
     // AUTH
     app.post("/login", async (req, res) => {
@@ -47,8 +49,7 @@ async function run() {
 
     // SERVICES
     app.get("/service", async (req, res) => {
-      const query = {};
-      const cursor = serviceCollection.find(query);
+      const cursor = serviceCollection.find();
       const services = await cursor.toArray();
       res.send(services);
     });
