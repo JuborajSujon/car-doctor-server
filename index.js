@@ -54,10 +54,15 @@ async function run() {
       res.send(services);
     });
 
-    app.get("/service/:id", async (req, res) => {
+    app.get("/services/:id", async (req, res) => {
       const id = req.params.id;
-      const query = { _id: ObjectId(id) };
-      const service = await serviceCollection.findOne(query);
+      const query = { _id: new ObjectId(id) };
+
+      const option = {
+        projection: { title: 1, price: 1, service_id: 1, img: 1 },
+      };
+
+      const service = await serviceCollection.findOne(query, option);
       res.send(service);
     });
 
