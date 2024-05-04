@@ -22,3 +22,17 @@ require('crypto').randomBytes(64).toString('hex')
 1. install express cookie parser
    `npm install cookie-parser`
 2. use `app.use(cookieParser())`
+
+# How to set cookie in the server side
+
+```code
+res.cookie("token", token, {
+          httpOnly: true,
+          secure: false,
+          sameSite: "none",
+        })
+```
+
+# How to set CORS in the server side
+
+# How to set cookie in the client side with axios
