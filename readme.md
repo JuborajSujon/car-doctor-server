@@ -30,9 +30,19 @@ res.cookie("token", token, {
           httpOnly: true,
           secure: false,
           sameSite: "none",
+          maxAge: 1000 * 60 * 60 * 24 * 7,
         })
 ```
 
 # How to set CORS in the server side
 
+```code
+app.use(cors({
+  origin: ["http://localhost:5173"],
+  credentials: true
+}));
+```
+
 # How to set cookie in the client side with axios
+
+in Axios use `withCredentials: true`
