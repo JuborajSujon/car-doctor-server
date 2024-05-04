@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
 require("dotenv").config();
 const app = express();
 const port = process.env.PORT || 5000;
@@ -14,6 +15,7 @@ app.use(
   })
 );
 app.use(express.json());
+app.use(cookieParser());
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@atlascluster.xgsegjb.mongodb.net/?retryWrites=true&w=majority`;
 
@@ -39,7 +41,6 @@ async function run() {
         .cookie("token", token, {
           httpOnly: true,
           secure: false,
-          sameSite: "none",
         })
         .status(200)
         .send(token);
@@ -72,6 +73,7 @@ async function run() {
     });
 
     app.get("/orders", async (req, res) => {
+      console.log("token booking", req.cookies);
       let query = {};
       if (req.query?.email) {
         query = { email: req.query.email };
