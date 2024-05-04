@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const app = express();
 const port = process.env.PORT || 5000;
@@ -21,6 +22,16 @@ async function run() {
   try {
     const serviceCollection = client.db("cardoctor").collection("services");
     const orderCollection = client.db("cardoctor").collection("orders");
+
+    // AUTH
+    app.post("/jwt", async (req, res) => {
+      const user = req.body;
+      console.log(user);
+      const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
+        expiresIn: "1h",
+      });
+      res.send(token);
+    });
 
     // SERVICES
     app.get("/service", async (req, res) => {
